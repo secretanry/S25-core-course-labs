@@ -57,5 +57,38 @@ app_python/
 3. jinja2
 4. pytz
 
-### **License**
+## Docker
+
+### Overview
+
+Our application is containerized using Docker to ensure consistent environments across development, testing, and production stages. Below are instructions on how to build, pull, and run the containerized application.
+
+### How to Build?
+
+To build the Docker image locally, follow these steps:
+
+1. Navigate to the `app_python` directory.
+2. Ensure you have Docker installed and running on your machine.
+3. Run the following command to build the Docker image:
+
+   ```sh
+   docker build -t python_app .
+   ```
+### How to Pull?
+
+If the Docker image has been pushed to a registry (e.g., Docker Hub), you can pull it directly without building:
+
+1. Ensure Docker is installed and running.
+2. Run the following command to pull the image:
+   ```shell
+   docker pull secretanry/python_app:latest
+   ```
+
+### How to Run?
+1. After building or pulling the image, you can run the container using the following command:
+   ```shell
+   docker run -p 8000:8000 python_app
+   ```
+
+## **License**
 This project is licensed under the **MIT License**.
