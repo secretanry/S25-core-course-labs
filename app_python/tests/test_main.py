@@ -1,12 +1,11 @@
 import re
 import os
 import sys
+from fastapi.testclient import TestClient
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.join(current_dir, "..")
 sys.path.insert(0, parent_dir)
-
-from fastapi.testclient import TestClient
 from main import app
 
 client = TestClient(app)
@@ -14,15 +13,18 @@ client = TestClient(app)
 
 def test_read_time_status_code():
     """
-    Ensure that a GET request to the root endpoint ("/") returns an HTTP 200 status code.
+    Ensure that a GET request to the root endpoint
+    ("/") returns an HTTP 200 status code.
     """
     response = client.get("/")
-    assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
+    assert response.status_code == 200, \
+        f"Expected status code 200, got {response.status_code}"
 
 
 def test_read_time_format():
     """
-    Ensure that the rendered HTML contains a datetime string in the correct format (YYYY-MM-DD HH:MM:SS).
+    Ensure that the rendered HTML contains a datetime string
+    in the correct format (YYYY-MM-DD HH:MM:SS).
     """
     response = client.get("/")
     content = response.text
@@ -30,4 +32,5 @@ def test_read_time_format():
     time_pattern = r"\d{2}:\d{2}:\d{2}"
     date_match = re.search(date_pattern, content)
     time_match = re.search(time_pattern, content)
-    assert date_match is not None and time_match is not None, "Rendered template does not contain a valid date or time."
+    assert date_match is not None and time_match is not None, \
+        "Rendered template does not contain a valid date or time."
