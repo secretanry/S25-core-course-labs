@@ -7,6 +7,7 @@ import pytz
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
+
 @app.get("/", response_class=HTMLResponse)
 async def read_time(request: Request):
     moscow_time = datetime.now(pytz.timezone("Europe/Moscow"))

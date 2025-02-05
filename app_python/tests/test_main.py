@@ -11,12 +11,14 @@ from main import app
 
 client = TestClient(app)
 
+
 def test_read_time_status_code():
     """
     Ensure that a GET request to the root endpoint ("/") returns an HTTP 200 status code.
     """
     response = client.get("/")
     assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
+
 
 def test_read_time_format():
     """
