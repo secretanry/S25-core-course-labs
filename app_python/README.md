@@ -1,6 +1,6 @@
 # Moscow Time Web Application
 
-![CI](https://github.com/secretanry/S25-core-cource-labs/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/secretanry/S25-core-course-labs/actions/workflows/ci.yml/badge.svg)
 
 A Python web application built with **FastAPI** to display the current time in Moscow.
 
