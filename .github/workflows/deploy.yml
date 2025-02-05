@@ -45,12 +45,14 @@ jobs:
         run: |
           coverage run -m pytest
           coverage report -m
+          
+      - name: Install Snyk CLI
+        run: npm install -g snyk
 
-      - name: Snyk Security Scan
-        uses: snyk/actions/python@master
-        with:
-          command: test
-          targetFile: ./app_python/requirements.txt
+
+      - name: Run Snyk Test
+        working-directory: ./app_python
+        run: snyk test
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
