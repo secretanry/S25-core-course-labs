@@ -48,6 +48,9 @@ jobs:
 
       - name: Snyk Security Scan
         uses: snyk/actions/python@master
+        with:
+          command: test
+          targetFile: ./app_python/requirements.txt
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
