@@ -1,12 +1,6 @@
 import re
-import os
-import sys
 from fastapi.testclient import TestClient
-
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.join(current_dir, "..")
-sys.path.insert(0, parent_dir)
-from main import app
+from app_python.main import app
 
 client = TestClient(app)
 
