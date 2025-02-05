@@ -16,7 +16,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12'  # Change to your desired Python version
+          python-version: '3.12'
 
       - name: Install Dependencies
         run: |
@@ -52,4 +52,4 @@ jobs:
 
       - name: Push Docker Image
         run: |
-          docker push secretanry/puthon_app:latest
+          docker push secretanry/python_app:latest
