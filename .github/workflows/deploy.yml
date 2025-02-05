@@ -19,7 +19,7 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r ./app_python/requirements.txt
 
       - name: Run Linter (flake8)
         run: |
@@ -46,7 +46,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t secretanry/python_app:latest .
+          docker build -t secretanry/python_app:latest ./app_python
 
       - name: Push Docker Image
         run: |
