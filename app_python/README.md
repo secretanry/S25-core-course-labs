@@ -109,5 +109,18 @@ To run the unit tests for this application, follow these steps:
    Firstly, you will see tests report about tests status, then coverage report. It will look like:
    ![Report example]( ./static/report.png "Coverage Report")
 
+## CI/CD Workflow
+
+This project uses GitHub Actions for continuous integration and continuous deployment. The CI workflow runs on **every branch** and includes the following steps:
+
+- **Dependencies:** Installs project dependencies using pip.
+- **Linter:** Runs `flake8` to check code style and catch potential issues.
+- **Tests:** Executes unit tests using `pytest` and `coverage` to ensure code quality.
+- **Docker:** 
+  - **Login:** Authenticates to DockerHub.
+  - **Build:** Builds a Docker image for the application.
+  - **Push:** Pushes the Docker image to DockerHub.
+
+
 ## **License**
 This project is licensed under the **MIT License**.
