@@ -1,5 +1,7 @@
 # Fork Counter Web Application
 
+![CI](https://github.com/secretanry/S25-core-course-labs/actions/workflows/ci-go.yml/badge.svg)
+
 A GO web application built with **net/http** to display current amount of forks of https://github.com/inno-devops-labs/S25-core-course-labs.
 
 ---
@@ -78,6 +80,29 @@ If the Docker image has been pushed to a registry (e.g., Docker Hub), you can pu
    ```shell
    docker run -p 8080:8080 app_go
    ```
+
+## Unit Tests
+
+To run the unit tests for this application, follow these steps:
+
+1. **Run the tests**:
+   ```bash
+   go test
+   ```
+2. **Inspect the output**:
+   You will see tests report about tests status.
+
+## CI/CD Workflow
+
+This project uses GitHub Actions for continuous integration and continuous deployment. The CI workflow runs on **every branch** and includes the following steps:
+
+- **Dependencies:** Installs project dependencies using go mod.
+- **Linter:** Runs `go vet` to check code style and catch potential issues.
+- **Tests:** Executes unit tests using `go test` to ensure code quality.
+- **Docker:**
+   - **Login:** Authenticates to DockerHub.
+   - **Build:** Builds a Docker image for the application.
+   - **Push:** Pushes the Docker image to DockerHub.
 
 ## **License**
 This project is licensed under the **MIT License**.

@@ -49,3 +49,15 @@ This document outlines the best practices and coding standards followed in the d
 
 ## **Dependencies**
 No external dependencies.
+
+# Unit Tests
+## Test File Structure
+
+- **`integration_test.go`**: Contains the unit tests for the application's endpoint.
+
+## Unit Tests Created
+
+1. **`TestMainServerIntegration`**:
+  - **Purpose**: Verify that the GET request to the root endpoint (`"/"`) returns an HTTP 200 status code and content are rendered.
+  - **Best Practice**: Ensures that the endpoint is reachable and responds as expected.
+

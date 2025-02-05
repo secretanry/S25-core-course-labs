@@ -2,7 +2,7 @@
 
 ## Overview
 
-Our CI pipeline is defined in [`.github/workflows/ci.yml`](./../.github/workflows/ci.yml) and is split into two jobs:
+Our CI pipeline is defined in [`.github/workflows/ci-python.yml`](./../.github/workflows/ci-python.yml) and is split into two jobs:
 
 1. **build-and-test:**  
    - **Checkout Code:** Retrieves the latest code.
@@ -15,7 +15,7 @@ Our CI pipeline is defined in [`.github/workflows/ci.yml`](./../.github/workflow
 
 2. **docker:**  
    - **DockerHub Login:** Authenticates using stored Docker credentials.
-   - **Build and Push:** Builds the Docker image with caching enabled (using GitHub Actions caching for Docker layers) and pushes the image to DockerHub. Pushing is conditioned to run only from the `main` branch.
+   - **Build and Push:** Builds the Docker image with caching enabled (using GitHub Actions caching for Docker layers) and pushes the image to DockerHub.
 
 ## Best Practices Applied
 
