@@ -28,7 +28,7 @@ jobs:
 
       - name: Run Tests
         run: |
-          coverage run -m pytest
+          coverage run -m pytest app_python/
           coverage report -m
 
   docker:
