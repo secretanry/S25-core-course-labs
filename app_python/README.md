@@ -90,5 +90,24 @@ If the Docker image has been pushed to a registry (e.g., Docker Hub), you can pu
    docker run -p 8000:8000 python_app
    ```
 
+## Unit Tests
+
+To run the unit tests for this application, follow these steps:
+
+1. **Install Dependencies**:
+   Make sure you have `pytest` and `coverage` installed. If not, install it using:
+   ```bash
+   pip install pytest
+   pip install coverage
+   ```
+2. **Run the tests with coverage report**:
+   ```bash
+   coverage run -m pytest
+   coverage report -m
+   ```
+3. **Inspect the output**:
+   Firstly, you will see tests report about tests status, then coverage report. It will look like:
+   ![Report example]( ./static/report.png "Coverage Report")
+
 ## **License**
 This project is licensed under the **MIT License**.

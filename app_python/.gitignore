@@ -15,3 +15,5 @@ venv/
 # Build
 dist/
 build/
+
+.coverage

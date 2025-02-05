@@ -12,5 +12,7 @@ async def read_time(request: Request):
     moscow_time = datetime.now(pytz.timezone("Europe/Moscow"))
     formatted_time = moscow_time.strftime("%Y-%m-%d %H:%M:%S")
     return templates.TemplateResponse(
-        "index.html", {"request": request, "time": formatted_time}
+        request,
+        "index.html",
+        {"time": formatted_time}
     )
