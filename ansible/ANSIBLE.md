@@ -193,3 +193,42 @@ enable_plugins = yacloud_compute
   changed_when: false
 ```
 5) I checked and my playbook successfully executes
+
+# Web app deployment
+
+Output of
+```bash
+    ansible-playbook playbooks/dev/main.yml --tags web_app
+```
+
+```
+PLAY [Deploy Docker using the Docker role] **************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************************************
+[WARNING]: Platform linux on host vm-1 is using the discovered Python interpreter at /usr/bin/python3.10, but future installation of another Python interpreter could change the meaning of that path.
+See https://docs.ansible.com/ansible-core/2.18/reference_appendices/interpreter_discovery.html for more information.
+ok: [vm-1]
+[WARNING]: Platform linux on host vm-2 is using the discovered Python interpreter at /usr/bin/python3.10, but future installation of another Python interpreter could change the meaning of that path.
+See https://docs.ansible.com/ansible-core/2.18/reference_appendices/interpreter_discovery.html for more information.
+ok: [vm-2]
+
+TASK [web_app : Create deployment directory for web_app] ************************************************************************************************************************************************
+changed: [vm-2]
+changed: [vm-1]
+
+TASK [web_app : Render Docker Compose template for the application] *************************************************************************************************************************************
+changed: [vm-2]
+changed: [vm-1]
+
+TASK [web_app : Pull Docker image for the application] **************************************************************************************************************************************************
+changed: [vm-1]
+changed: [vm-2]
+
+TASK [web_app : Start the application container using Docker Compose] ***********************************************************************************************************************************
+changed: [vm-1]
+changed: [vm-2]
+
+PLAY RECAP **********************************************************************************************************************************************************************************************
+vm-1                       : ok=5    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+vm-2                       : ok=5    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+```
