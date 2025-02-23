@@ -17,6 +17,7 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.INFO)
 
+
 # Log request information
 @app.middleware("http")
 async def log_request_info(request: Request, call_next):
