@@ -19,6 +19,7 @@ def get_metrics(request: Request, response: Response):
     resp_time = time.time() - start_time
     REQUEST_LATENCY.labels('test_app', request.url.path).observe(resp_time)
 
-    REQUEST_COUNT.labels('test_app', request.method, request.url.path, response.status_code).inc()
+    REQUEST_COUNT.labels('test_app', request.method, request.url.path,
+                         response.status_code).inc()
 
     return response
