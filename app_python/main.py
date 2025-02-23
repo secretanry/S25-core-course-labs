@@ -11,7 +11,8 @@ templates = Jinja2Templates(directory="templates")
 
 logger = logging.getLogger("my_app")
 handler = logging.StreamHandler(sys.stdout)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter('%(asctime)s - %(name)s '
+                              '- %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.INFO)
@@ -19,7 +20,8 @@ logger.setLevel(logging.INFO)
 # Log request information
 @app.middleware("http")
 async def log_request_info(request: Request, call_next):
-    logger.info(f"Received request: {request.method} {request.url} from {request.client.host}")
+    logger.info(f"Received request: {request.method} "
+                f"{request.url} from {request.client.host}")
     response = await call_next(request)
     return response
 
