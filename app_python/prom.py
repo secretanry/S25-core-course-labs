@@ -13,6 +13,7 @@ REQUEST_LATENCY = Histogram(
     ['app_name', 'endpoint']
 )
 
+
 def get_metrics(request: Request, response: Response):
     start_time = time.time()
 
