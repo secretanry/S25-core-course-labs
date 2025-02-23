@@ -5,30 +5,22 @@ x-logging: &default-logging
     max-file: "10"
     tag: "{{.ImageName}}|{{.Name}}"
 
-networks:
-  loki:
 
 services:
   loki:
     image: grafana/loki:latest
     ports:
       - "3100:3100"
-    volumes:
-      - ./loki-config.yaml:/etc/loki/local-config.yaml
     command: -config.file=/etc/loki/local-config.yaml
     logging: *default-logging
-    networks:
-      - loki
 
   promtail:
     image: grafana/promtail:latest
     volumes:
-      - /var/log:/var/log
+      - /var/lib/docker/containers:/var/lib/docker/containers
       - ./promtail-config.yaml:/etc/promtail/config.yaml
-    command: -config.file=/etc/promtail/config.yml
+    command: -config.file=/etc/promtail/config.yaml
     logging: *default-logging
-    networks:
-      - loki
 
   grafana:
     environment:
@@ -59,14 +51,23 @@ services:
     ports:
       - "3000:3000"
     logging: *default-logging
-    networks:
-      - loki
     volumes:
       - ./grafana-data:/var/lib/grafana
 
   app_python:
-    image: secretanry/python_app
+    build:
+      context: ../app_python
+      dockerfile: Dockerfile
     container_name: app_python
     ports:
       - "8000:8000"
+    logging: *default-logging
+
+  app_go:
+    build:
+      context: ../app_go
+      dockerfile: Dockerfile
+    container_name: app_go
+    ports:
+      - "8001:8080"
     logging: *default-logging
