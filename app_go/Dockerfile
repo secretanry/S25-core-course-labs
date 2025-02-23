@@ -6,6 +6,7 @@ WORKDIR /home/builder
 USER builder
 
 COPY go.mod .
+COPY go.sum .
 
 COPY main.go .
 

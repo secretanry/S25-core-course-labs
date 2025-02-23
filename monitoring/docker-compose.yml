@@ -13,6 +13,15 @@ services:
       - "3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
     logging: *default-logging
+    healthcheck:
+      test: [ "CMD", "wget", "-q", "-O", "-", "http://localhost:3100/ready" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 256M
 
   promtail:
     image: grafana/promtail:latest
@@ -21,6 +30,15 @@ services:
       - ./promtail-config.yaml:/etc/promtail/config.yaml
     command: -config.file=/etc/promtail/config.yaml
     logging: *default-logging
+    healthcheck:
+      test: [ "CMD", "pgrep", "promtail" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 256M
 
   grafana:
     environment:
@@ -53,6 +71,16 @@ services:
     logging: *default-logging
     volumes:
       - ./grafana-data:/var/lib/grafana
+    healthcheck:
+      test: [ "CMD", "wget", "-q", "-O", "-", "http://localhost:3000/robots.txt" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
 
   app_python:
     build:
@@ -62,6 +90,16 @@ services:
     ports:
       - "8000:8000"
     logging: *default-logging
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:5001/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
 
   app_go:
     build:
@@ -71,6 +109,15 @@ services:
     ports:
       - "8001:8080"
     logging: *default-logging
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 256M
 
   prometheus:
     image: prom/prometheus:latest

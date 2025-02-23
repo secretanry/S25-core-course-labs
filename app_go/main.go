@@ -2,6 +2,8 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"html/template"
 	"io"
 	"log"
@@ -16,6 +18,32 @@ type PageData struct {
 	Forks string
 }
 
+type statusRecordingResponseWriter struct {
+	http.ResponseWriter
+	statusCode int
+}
+
+func (rw *statusRecordingResponseWriter) WriteHeader(code int) {
+	rw.statusCode = code
+	rw.ResponseWriter.WriteHeader(code)
+}
+
+var requestCount = prometheus.NewCounterVec(
+	prometheus.CounterOpts{
+		Name: "request_count",
+		Help: "Total number of requests processed by the Go application",
+	},
+	[]string{"app_name", "method", "endpoint", "http_status"})
+
+var requestLatency = prometheus.NewHistogramVec(
+	prometheus.HistogramOpts{
+		Name:    "request_latency_seconds",
+		Help:    "Request latency in seconds",
+		Buckets: prometheus.DefBuckets, // or define your own buckets
+	},
+	[]string{"app_name", "endpoint"},
+)
+
 func loggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		startTime := time.Now()
@@ -23,6 +51,25 @@ func loggingMiddleware(next http.Handler) http.Handler {
 		log.Printf("[%s] %s %s from %s", startTime.Format(time.RFC3339), r.Method, r.URL.Path, r.RemoteAddr)
 
 		next.ServeHTTP(w, r)
+	})
+}
+
+func metricsMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		startTime := time.Now()
+
+		rr := &statusRecordingResponseWriter{ResponseWriter: w, statusCode: http.StatusOK}
+		next.ServeHTTP(rr, r)
+
+		elapsed := time.Since(startTime).Seconds()
+
+		requestLatency.WithLabelValues("app_go", r.URL.Path).Observe(elapsed)
+		requestCount.WithLabelValues(
+			"my_go_app",
+			r.Method,
+			r.URL.Path,
+			strconv.Itoa(rr.statusCode),
+		).Inc()
 	})
 }
 
@@ -106,6 +153,14 @@ func main() {
 			return
 		}
 	})
+
+	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("OK"))
+	})
+
+	http.Handle("/metrics", promhttp.Handler())
+
 	err := http.ListenAndServe(":8080", loggingMiddleware(http.DefaultServeMux))
 	if err != nil {
 		log.Fatal(err)

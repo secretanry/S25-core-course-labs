@@ -4,6 +4,11 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from datetime import datetime
+
+from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
+from starlette.responses import Response
+from prom import get_metrics
+
 import pytz
 
 app = FastAPI()
@@ -17,6 +22,11 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.INFO)
 
+@app.middleware("http")
+async def update_metrics(request: Request, call_next):
+    response = await call_next(request)
+    get_metrics(request, response)
+    return response
 
 # Log request information
 @app.middleware("http")
@@ -36,3 +46,11 @@ async def read_time(request: Request):
         "index.html",
         {"time": formatted_time}
     )
+
+@app.get("/metrics")
+async def metrics():
+    return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
+
+@app.get("/health")
+async def health():
+    return "OK", 200

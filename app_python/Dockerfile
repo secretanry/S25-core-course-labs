@@ -14,6 +14,7 @@ RUN . venv/bin/activate && pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY main.py .
+COPY prom.py .
 COPY ./templates ./templates
 
 # Expose port 8000
