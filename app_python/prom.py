@@ -1,7 +1,6 @@
 from fastapi import Request
 from prometheus_client import Counter, Histogram
 import time
-from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response
 
 REQUEST_COUNT = Counter(
