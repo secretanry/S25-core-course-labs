@@ -16,6 +16,16 @@ type PageData struct {
 	Forks string
 }
 
+func loggingMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		startTime := time.Now()
+
+		log.Printf("[%s] %s %s from %s", startTime.Format(time.RFC3339), r.Method, r.URL.Path, r.RemoteAddr)
+
+		next.ServeHTTP(w, r)
+	})
+}
+
 func main() {
 	amountMutex := sync.Mutex{}
 	amountCalculated := false
@@ -96,7 +106,7 @@ func main() {
 			return
 		}
 	})
-	err := http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":8080", loggingMiddleware(http.DefaultServeMux))
 	if err != nil {
 		log.Fatal(err)
 		return
