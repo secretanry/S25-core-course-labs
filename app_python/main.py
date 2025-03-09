@@ -23,6 +23,7 @@ logger.setLevel(logging.INFO)
 
 VISIT_FILE_PATH = os.getenv("VISIT_FILE_PATH", "/data/visits")
 
+
 def load_visits():
     try:
         if not os.path.exists(VISIT_FILE_PATH):
@@ -32,6 +33,7 @@ def load_visits():
     except Exception as e:
         print(f"Visit load error: {e}")
         return 0
+
 
 def save_visits(count: int):
     try:
