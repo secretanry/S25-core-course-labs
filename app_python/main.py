@@ -21,24 +21,25 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.INFO)
 
-VISIT_FILE = "/data/visits"
+VISIT_FILE_PATH = os.getenv("VISIT_FILE_PATH", "/data/visits")
 
+def load_visits():
+    try:
+        if not os.path.exists(VISIT_FILE_PATH):
+            return 0
+        with open(VISIT_FILE_PATH, "r") as f:
+            return int(f.read().strip())
+    except Exception as e:
+        print(f"Visit load error: {e}")
+        return 0
 
-def read_visit_count():
-    if os.path.exists(VISIT_FILE):
-        with open(VISIT_FILE, "r") as f:
-            try:
-                return int(f.read().strip())
-            except ValueError:
-                return 0
-    return 0
-
-
-def increment_visit_count():
-    count = read_visit_count() + 1
-    with open(VISIT_FILE, "w") as f:
-        f.write(str(count))
-    return count
+def save_visits(count: int):
+    try:
+        os.makedirs(os.path.dirname(VISIT_FILE_PATH), exist_ok=True)
+        with open(VISIT_FILE_PATH, "w") as f:
+            f.write(str(count))
+    except Exception as e:
+        print(f"Visit save error: {e}")
 
 
 @app.middleware("http")
@@ -58,7 +59,7 @@ async def log_request_info(request: Request, call_next):
 
 @app.get("/", response_class=HTMLResponse)
 async def read_time(request: Request):
-    increment_visit_count()
+    save_visits(load_visits() + 1)
     moscow_time = datetime.now(pytz.timezone("Europe/Moscow"))
     formatted_time = moscow_time.strftime("%Y-%m-%d %H:%M:%S")
     return templates.TemplateResponse(
@@ -70,7 +71,7 @@ async def read_time(request: Request):
 
 @app.get("/visits")
 async def get_visits():
-    visit_count = read_visit_count()
+    visit_count = load_visits()
     return {"visit_count": visit_count}
 
 
