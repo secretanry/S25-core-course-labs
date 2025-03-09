@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"sync"
@@ -73,6 +74,30 @@ func metricsMiddleware(next http.Handler) http.Handler {
 	})
 }
 
+var visitsMutex sync.Mutex
+var visitsFile = "/data/visits"
+
+func loadVisits() int {
+	visitsMutex.Lock()
+	defer visitsMutex.Unlock()
+
+	data, err := os.ReadFile(visitsFile)
+	if err != nil {
+		return 0
+	}
+	count, err := strconv.Atoi(strings.TrimSpace(string(data)))
+	if err != nil {
+		return 0
+	}
+	return count
+}
+
+func saveVisits(count int) {
+	visitsMutex.Lock()
+	defer visitsMutex.Unlock()
+	_ = os.WriteFile(visitsFile, []byte(strconv.Itoa(count)), 0644)
+}
+
 func main() {
 	amountMutex := sync.Mutex{}
 	amountCalculated := false
@@ -131,6 +156,10 @@ func main() {
 	}()
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		count := loadVisits()
+		count++
+		saveVisits(count)
+
 		amountMutex.Lock()
 		data := PageData{}
 		data.Forks = "Loading. Please wait..."
@@ -152,6 +181,12 @@ func main() {
 			http.Error(w, "Failed to execute template", http.StatusInternalServerError)
 			return
 		}
+	})
+
+	http.HandleFunc("/visits", func(w http.ResponseWriter, r *http.Request) {
+		count := loadVisits()
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Total visits: " + strconv.Itoa(count)))
 	})
 
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {

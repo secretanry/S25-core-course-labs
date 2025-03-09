@@ -33,4 +33,6 @@ RUN chmod +x ./go-binary
 
 EXPOSE 8080
 
+RUN mkdir -p "data"
+
 CMD [ "./go-binary" ]

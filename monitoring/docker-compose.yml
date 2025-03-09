@@ -120,6 +120,8 @@ services:
       resources:
         limits:
           memory: 256M
+    volumes:
+      - ./../app_go/volumes:/data
 
   prometheus:
     image: prom/prometheus:latest

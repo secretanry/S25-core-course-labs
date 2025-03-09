@@ -17,6 +17,9 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          envFrom:
+            - configMapRef:
+                name: go-config
           resources:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
