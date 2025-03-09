@@ -20,5 +20,7 @@ COPY ./templates ./templates
 # Expose port 8000
 EXPOSE 8000
 
+RUN mkdir -p "data"
+
 # Run the server
 CMD ["/home/builder/venv/bin/uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

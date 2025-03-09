@@ -99,6 +99,8 @@ services:
       resources:
         limits:
           memory: 256M
+    volumes:
+      - ./../app_python/volumes:/data
 
 
   app_go:

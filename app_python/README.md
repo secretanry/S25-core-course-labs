@@ -126,3 +126,9 @@ This project uses GitHub Actions for continuous integration and continuous deplo
 
 ## **License**
 This project is licensed under the **MIT License**.
+
+## Data persistence
+Introduced new functionality to persistently store visits amount to main route
+1. File ./app_python/volumes/visits - the content is a number of visits
+2. Endpoint /visit to display amount of visits
+To start the application in this mode you need to fun it using **docker-compose.yml** from monitoring folder
