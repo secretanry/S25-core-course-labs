@@ -41,10 +41,10 @@ NOTES:
 ```
 
 5. Lets check chart status using **minikube dashboard**
-![Dashboard](./assets/dashboard.png, "dashboard")
+![Dashboard](static/dashboard.png, "dashboard")
 
 6. I verified that my app is accessible
-![App](./assets/helm_app.png, "app")
+![App](static/helm_app.png, "app")
 
 7. Pods status
 ```bash

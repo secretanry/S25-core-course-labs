@@ -168,7 +168,7 @@ Apply the manifest
 ❗  Because you are using a Docker driver on darwin, the terminal needs to be open to run it.
 
 ```
-![Tunnel](./assets/all_tunnel.png "app")
+![Tunnel](static/all_tunnel.png "app")
 
 # Bonus
 
