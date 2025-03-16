@@ -6,6 +6,7 @@ metadata:
     {{- include "common.labels" . | nindent 4 }}
     app-python/special-label: "app-python"
 spec:
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ .Chart.Name }}
