@@ -22,11 +22,15 @@ EXPOSE 8000
 
 RUN mkdir -p "data"
 
+USER root
+
 RUN apt-get update && apt-get install -y \
     dnsutils \
     iputils-ping \
     curl \
     && rm -rf /var/lib/apt/lists/*
+
+USER appuser
 
 # Run the server
 CMD ["/home/builder/venv/bin/uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
