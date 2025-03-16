@@ -35,6 +35,35 @@ spec:
           configMap:
             name: {{ .Values.config.name }}
       containers:
+        {{- if .Values.probes.enabled }}
+        livenessProbe:
+              {{- if .Values.probes.liveness.http.enabled }}
+          httpGet:
+            path: {{ .Values.probes.liveness.http.path }}
+            port: {{ .Values.service.port }}
+              {{- else }}
+          exec:
+            command: {{ toJson .Values.probes.liveness.command }}
+              {{- end }}
+          initialDelaySeconds: {{ .Values.probes.liveness.initialDelay }}
+          periodSeconds: {{ .Values.probes.liveness.period }}
+          timeoutSeconds: {{ .Values.probes.liveness.timeout }}
+          failureThreshold: {{ .Values.probes.liveness.failureThreshold }}
+
+        readinessProbe:
+              {{- if .Values.probes.readiness.http.enabled }}
+          httpGet:
+            path: {{ .Values.probes.readiness.http.path }}
+            port: {{ .Values.service.port }}
+              {{- else }}
+          exec:
+            command: {{ toJson .Values.probes.readiness.command }}
+              {{- end }}
+          initialDelaySeconds: {{ .Values.probes.readiness.initialDelay }}
+          periodSeconds: {{ .Values.probes.readiness.period }}
+          timeoutSeconds: {{ .Values.probes.readiness.timeout }}
+          failureThreshold: {{ .Values.probes.readiness.failureThreshold }}
+            {{- end }}
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}

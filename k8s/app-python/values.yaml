@@ -70,3 +70,13 @@ autoscaling:
   minReplicas: 1
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
+
+probes:
+  liveness:
+    http:
+      enabled: true
+      path: /health
+  readiness:
+    http:
+      enabled: true
+      path: /health
