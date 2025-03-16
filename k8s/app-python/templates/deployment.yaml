@@ -27,13 +27,13 @@ spec:
             - name: config-volume
               mountPath: /config.json
               subPath: config.json
-          resources:
-            requests:
-              cpu: {{ .Values.resources.requests.cpu }}
-              memory: {{ .Values.resources.requests.memory }}
-            limits:
-              cpu: {{ .Values.resources.limits.cpu }}
-              memory: {{ .Values.resources.limits.memory }}
+{{/*          resources:*/}}
+{{/*            requests:*/}}
+{{/*              cpu: {{ .Values.resources.requests.cpu }}*/}}
+{{/*              memory: {{ .Values.resources.requests.memory }}*/}}
+{{/*            limits:*/}}
+{{/*              cpu: {{ .Values.resources.limits.cpu }}*/}}
+{{/*              memory: {{ .Values.resources.limits.memory }}*/}}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
